@@ -1408,7 +1408,23 @@ namespace amd {
 
       for (size_t n = 1; n < sections.size(); ++n) {
         GElfSection* section = sections[n].get();
-        if (!section->pullData()) { return false; }
+        if (section->type() == SHT_STRTAB) {
+          if (!section->pullData()) { return false; }
+        }
+      }
+
+      for (size_t n = 1; n < sections.size(); ++n) {
+        GElfSection* section = sections[n].get();
+        if (section->type() == SHT_SYMTAB || section->type() == SHT_DYNSYM) {
+          if (!section->pullData()) { return false; }
+        }
+      }
+
+      for (size_t n = 1; n < sections.size(); ++n) {
+        GElfSection* section = sections[n].get();
+        if (section->type() != SHT_STRTAB && section->type() != SHT_SYMTAB && section->type() != SHT_DYNSYM) {
+          if (!section->pullData()) { return false; }
+        }
       }
 
       for (size_t i = 1; i < sections.size(); ++i) {
@@ -1417,6 +1433,13 @@ namespace amd {
         if (section->Name() == ".strtab") { strtabSection = static_cast<GElfStringTable*>(section.get()); }
         if (section->Name() == ".symtab") { symtabSection = static_cast<GElfSymbolTable*>(section.get()); }
         if (section->Name() == ".note") { noteSection = static_cast<GElfNoteSection*>(section.get()); }
+      }
+
+      size_t phnum;
+      if (elf_getphdrnum(e, &phnum) < 0) { return elfError("elf_getphdrnum failed"); }
+      for (size_t i = 0; i < phnum; ++i) {
+        segments.push_back(std::unique_ptr<GElfSegment>(new GElfSegment(this, i)));
+        if (!segments[i]->pull()) { return false; }
       }
 
       return true;
