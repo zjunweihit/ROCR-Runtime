@@ -1330,9 +1330,9 @@ void Runtime::LoadExtensions() {
 #endif
 
   // Update Hsa Api Table with handle of Image extension Apis
-  extensions_.LoadFinalizer(kFinalizerLib[os_index(os::current_os)]);
-  hsa_api_table_.LinkExts(&extensions_.finalizer_api,
-                          core::HsaApiTable::HSA_EXT_FINALIZER_API_TABLE_ID);
+  //extensions_.LoadFinalizer(kFinalizerLib[os_index(os::current_os)]);
+  //hsa_api_table_.LinkExts(&extensions_.finalizer_api,
+  //                        core::HsaApiTable::HSA_EXT_FINALIZER_API_TABLE_ID);
 
   // Update Hsa Api Table with handle of Finalizer extension Apis
   extensions_.LoadImage(kImageLib[os_index(os::current_os)]);
