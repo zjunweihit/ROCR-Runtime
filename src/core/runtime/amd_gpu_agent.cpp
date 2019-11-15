@@ -886,7 +886,7 @@ hsa_status_t GpuAgent::QueueCreate(size_t size, hsa_queue_type32_t queue_type,
   // Allocate scratch memory
   ScratchInfo scratch;
   if (private_segment_size == UINT_MAX) {
-    private_segment_size = 0;
+    private_segment_size = core::Runtime::runtime_singleton_->flag().queue_scratch_size();
   }
   scratch.size_per_thread = private_segment_size;
 
