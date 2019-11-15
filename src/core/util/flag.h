@@ -85,6 +85,9 @@ class Flag {
     var = os::GetEnvVar("HSA_SCRATCH_MEM");
     scratch_mem_size_ = atoi(var.c_str());
 
+    var = os::GetEnvVar("HSA_QUEUE_SCRATCH_SIZE");
+    queue_scratch_size_ = atoi(var.c_str());
+
     tools_lib_names_ = os::GetEnvVar("HSA_TOOLS_LIB");
 
     var = os::GetEnvVar("HSA_TOOLS_REPORT_LOAD_FAILURE");
@@ -137,6 +140,7 @@ class Flag {
   uint32_t max_queues() const { return max_queues_; }
 
   size_t scratch_mem_size() const { return scratch_mem_size_; }
+  size_t queue_scratch_size() const { return queue_scratch_size_; }
 
   std::string tools_lib_names() const { return tools_lib_names_; }
 
@@ -160,6 +164,7 @@ class Flag {
   uint32_t max_queues_;
 
   size_t scratch_mem_size_;
+  size_t queue_scratch_size_;
 
   std::string tools_lib_names_;
 
